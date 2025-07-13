@@ -14,6 +14,7 @@
         src: url("digital-7_mono.ttf") format("truetype");
       }
     </style>
+
     <link href="css/default.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/garden.js"></script>
@@ -33,7 +34,7 @@
           <span class="comments">// and I can't stop thinking about it</span
           ><br />
           I wish I could take back what I said<br />
-          <span class="comments">// You didn’t deserve that</span><br />
+          <span class="comments">// You didn't deserve that</span><br />
           You mean everything to me<br />
           <span class="comments"
             >// and I hate being the reason you're upset</span
@@ -41,24 +42,26 @@
           I don't want to make you feel this way<br />
           <span class="comments">// ever</span><br />
           Your smile lights up my world<br />
-          <span class="comments">// I miss that light</span><br />
-          Every moment without you feels empty<br />
+          <span class="comments"
+            >// I want that light to shine brighter than ever</span
+          ><br />
+          Every moment of peace or chaos without you feels empty<br />
           <span class="comments">// It really does</span><br />
           I promise to do better<br />
           <span class="comments">// and to listen, always</span><br />
           I hope you can like me again<br />
-          <span class="comments">// I’ll make things right</span><br />
+          <span class="comments">// I'll make things right</span><br />
 
           <br />
           I miss you 🥺❤️<br />
           <br />
 
           <span id="heartspan">
-            <a href="adu&malju.jpg" target="_blank">
+            <a href="gallery.html" target="_blank">
               <i class="fas fa-heart" id="icon"></i>
             </a> </span
           ><br />
-          <span class="comments">// click the heart if you want to smile</span>
+          <span class="comments">// click the heart to see our memories</span>
         </div>
 
         <div id="loveHeart">
@@ -112,7 +115,7 @@
       }
     </script>
 
-    <audio id="bg-music" loop preload="auto">
+    <audio id="bg-music" autoplay loop preload="auto">
       <source src="The-Night-We-Met.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
@@ -138,6 +141,37 @@
     <script>
       const bgMusic = document.getElementById("bg-music");
       const toggleBtn = document.getElementById("musicToggle");
+
+      // Force autoplay on load, retry if blocked
+      window.addEventListener("load", () => {
+        const tryPlay = () => {
+          bgMusic.volume = 1.0;
+          const playPromise = bgMusic.play();
+
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                toggleBtn.textContent = "🔈 Mute Music";
+              })
+              .catch((error) => {
+                console.log(
+                  "Autoplay blocked. Waiting for user interaction..."
+                );
+                toggleBtn.textContent = "🔊 Play Music";
+                document.addEventListener("click", userInitiatedPlay, {
+                  once: true,
+                });
+              });
+          }
+        };
+
+        const userInitiatedPlay = () => {
+          bgMusic.play();
+          toggleBtn.textContent = "🔈 Mute Music";
+        };
+
+        tryPlay();
+      });
 
       toggleBtn.addEventListener("click", function () {
         if (bgMusic.paused) {
